@@ -1,0 +1,20 @@
+{
+    "name":"icsrgsite",
+    "version":"1.0.0",
+    "description":"The website for ICSRG",
+    "main":"index.js",
+    "scripts": {
+        "start":"node index",
+        "dev":"nodemon index"
+    },
+    "keywords":[],
+    "author":"Harry George",
+    "license":"ISC",
+    "dependencies": {
+        "express":"^4.18.1",
+        "handlebars":"^4.7.7"
+    },
+    "devDependencies": {
+        "nodemon":"^2.0.19"
+    }
+}
