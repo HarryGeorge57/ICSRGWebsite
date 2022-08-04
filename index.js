@@ -7,6 +7,8 @@ const bodyParser = require('body-parser');
 
 const PORT = process.env.PORT || 8080;
 
+//iRacing Driver Data Importing
+// function call_iRacing()
 
 //use body parser middleware
 app.use(bodyParser.urlencoded({exended: false}));
@@ -22,10 +24,16 @@ app.get('/', function (req, res){
 });
 
 
-//Create About Page Route
+//Page Routing
+//About
 app.get('/about.html', function (req, res){
     res.render('about');
 });
+//Drivers
+app.get('/drivers.html', function(req, res){
+    res.render('drivers');
+});
+
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
