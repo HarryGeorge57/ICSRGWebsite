@@ -1,20 +1,23 @@
 {
-    "name":"icsrgsite",
-    "version":"1.0.0",
-    "description":"The website for ICSRG",
-    "main":"index.js",
+    "name": "icsrgsite",
+    "version": "1.0.0",
+    "description": "The website for ICSRG",
+    "main": "index.js",
     "scripts": {
-        "start":"node index",
-        "dev":"nodemon index"
+        "start": "node index",
+        "dev": "nodemon index"
     },
-    "keywords":[],
-    "author":"Harry George",
-    "license":"ISC",
+    "keywords": [],
+    "author": "Harry George",
+    "license": "ISC",
     "dependencies": {
-        "express":"^4.18.1",
-        "handlebars":"^4.7.7"
+        "body-parser": "^1.20.0",
+        "express": "^4.18.1",
+        "express-handlebars": "^6.0.6",
+        "handlebars": "^4.7.7",
+        "request": "^2.88.2"
     },
     "devDependencies": {
-        "nodemon":"^2.0.19"
+        "nodemon": "^2.0.19"
     }
 }
