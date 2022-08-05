@@ -1,0 +1,101 @@
+Here is the way I do authentication in Node.js. I prefer using fetch. This way you can just have your functions that call the api just check if the loginCookies are empty, then request auth. or any time you get a 401, just run auth again then your call again.
+
+const fetch = require('node-fetch'); //this may be outdated with the newest node.js, but plenty of docs exist for including other files
+﻿var loginCookies = '';
+
+
+sync function getAuth()
+{
+    console.log('AUTH')
+    const accessReply = await fetch('https://members-ng.iracing.com/auth', {
+        method: 'POST',
+        body:   JSON.stringify(
+        {
+            "email": iRacingEmailforauth,
+            "password": iRacingPassword
+        }),
+        credentials: 'include',
+        headers: {'Accept': '*/*', "Content-type": "application/json"}
+    })
+    const replyBody = await accessReply.json();
+    var statusCode = await accessReply.status;
+    console.log(stringTime() + "Auth status code: " + statusCode)
+    if(statusCode == 200)
+    {
+        delay = originalDelay;
+    }
+    if(statusCode == 503)
+    {
+        delay = maintenceDelay;
+    }
+    loginCookies = parseCookies(accessReply);
+    return statusCode;
+}
+
+
+function parseCookies(response) 
+{
+    const raw = response.headers.raw()['set-cookie'];
+    return raw.map((entry) => {
+      const parts = entry.split(';');
+      const cookiePart = parts[0];
+      return cookiePart;
+    }).join(';');
+}
+
+
+And as an example, here is a call to the api:
+
+
+
+async function getCarName(carid)
+{
+    var url = "https://members-ng.iracing.com/data/car/get"
+
+
+    try {
+        var accessReply = await fetch(url, {
+            method: 'get',
+            headers: {'Accept': 'application/json', 'cookie': loginCookies},
+            cache: "no-store"
+        })
+        
+        var replyBody = await accessReply.json();
+        var statusCode = await accessReply.status;
+        var replyHeaders = await accessReply.headers;
+
+
+        if(replyBody.link != null)
+        {
+            var resultLink = replyBody.link;
+            const amazonReply = await fetch(resultLink, {
+                method: 'get',
+                headers: {'Accept': 'application/json'},
+                cache: "no-store"
+            })
+            var raceResultBody = await amazonReply.json();
+            var amazonStatus = await amazonReply.status;
+            var match = '';
+            raceResultBody.forEach(element => {
+                if(element.car_id== carid)
+                {
+                    match = element.car_name;
+                }
+            });
+            if(match != '')
+                return match
+        }
+        return "Car not found?"
+    } catch (error) {
+        console.error(error.message);
+        console.error(error.stack);
+        return "Lookup Error";
+    }
+}
+
+
+notice the fetch header "cookie".
+
+
+
+The second function there just gets the list of cars and searches for the name string of the id that gets passed in.
